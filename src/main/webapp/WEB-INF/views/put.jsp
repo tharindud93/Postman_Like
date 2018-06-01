@@ -12,7 +12,7 @@
 <div class="container">
 <h2>Put Method</h2>
 
-<form action="postmeth">
+<form action="putmeth">
 <div class="col=md-6">
 <label>Header:</label>
 <input type="text" class="form-control input-sm col-md-7" name="header" id="header"/>

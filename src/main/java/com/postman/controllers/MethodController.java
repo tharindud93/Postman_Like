@@ -32,7 +32,7 @@ public class MethodController {
 	public static String GetMeth(HttpServletRequest req,Model model){
 		
 		 // Create an instance of StopWatch.
-       StopWatch stopWatch = new StopWatch();
+      // StopWatch stopWatch = new StopWatch();
 		String reqhead =req.getParameter("headerval");
 		String url=req.getParameter("url");
 		String param=req.getParameter("param");
@@ -84,7 +84,7 @@ public class MethodController {
 	 public static String postMeth(HttpServletRequest req,Model model ){
 		
 		 // Create an instance of StopWatch.
-        StopWatch stopWatch = new StopWatch();
+        //StopWatch stopWatch = new StopWatch();
 		
 		String url=req.getParameter("url");
 		String name=req.getParameter("name");
@@ -98,20 +98,23 @@ public class MethodController {
         Map<String,String> user=new HashMap<>();
         user.put("name",name);
         user.put("surname",lname);
-        stopWatch.start();
+        long startTime = System.currentTimeMillis();
         
         //get response as http entity
         HttpEntity<String> response =restTemplate.postForEntity(url, user, String.class,entity);
-        stopWatch.stop();
-        
+        long endtTime = System.currentTimeMillis();
+        long time=endtTime-startTime;
         //System.out.println("2="+getString);
+        model.addAttribute("url",url);
+        model.addAttribute("time",time+" ms"); 
         model.addAttribute("head",response.getHeaders());
         model.addAttribute("bodyy",response.getBody());
-        
-        System.out.println("time="+stopWatch.getTime());
-        System.out.println("3="+response.getHeaders());
-        System.out.println("4="+response.getBody());
-        System.out.println(response);
+        try {
+			writer(url,"POST",time,response.getHeaders(),response.getBody());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
        return "post";
     }
 	//===============================================to test Delete method=============================================
@@ -136,11 +139,22 @@ public class MethodController {
         //convert url to urlstring
         String buildedurl=builder.toUriString();
        // restTemplate.delete(buildedurl);
-
+        long startTime = System.currentTimeMillis();
         HttpEntity<String> response =restTemplate.exchange(buildedurl, HttpMethod.DELETE, entity, String.class);
+        long endtTime = System.currentTimeMillis();
+        long time=endtTime-startTime;
+        //System.out.println("2="+getString);
+        model.addAttribute("url",buildedurl);
+        model.addAttribute("time",time+" ms"); 
         model.addAttribute("head",response.getHeaders());
         model.addAttribute("bodyy",response.getBody());
         System.out.println(response.toString());
+        try {
+			writer(url,"DELETE",time,response.getHeaders(),response.getBody());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return "delete";
 
     }
@@ -168,9 +182,9 @@ public class MethodController {
         user.put("id",id);
         user.put("name",name);
         user.put("surname",surname);
-       // restTemplate.put(burl ,user);
-        HttpEntity<String> response =restTemplate.exchange(burl, HttpMethod.PUT, entity, String.class,user);
-        System.out.println(response.toString());
+        restTemplate.put(burl ,user);
+//        HttpEntity<String> responsense = restTemplate.exchange(burl, HttpMethod.PUT, entity, String.class, user);
+//        System.out.println(response.toString());
 
      return null;
     }
