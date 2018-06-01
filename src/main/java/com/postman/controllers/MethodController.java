@@ -183,7 +183,7 @@ public class MethodController {
         user.put("name",name);
         user.put("surname",surname);
         restTemplate.put(burl ,user);
-//        HttpEntity<String> responsense = restTemplate.exchange(burl, HttpMethod.PUT, entity, String.class, user);
+        HttpEntity<String> responsense = restTemplate.exchange(burl, HttpMethod.PUT, entity, String.class, user);
 //        System.out.println(response.toString());
 
      return null;
