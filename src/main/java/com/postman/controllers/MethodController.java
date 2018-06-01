@@ -98,6 +98,7 @@ public class MethodController {
         Map<String,String> user=new HashMap<>();
         user.put("name",name);
         user.put("surname",lname);
+        System.out.println(user.toString());
         long startTime = System.currentTimeMillis();
         
         //get response as http entity
@@ -169,24 +170,43 @@ public class MethodController {
 		String surname=request.getParameter("surname");
         RestTemplate restTemplate=new RestTemplate();
         //create resttemplate ins
-        Map<String, Object> user=new HashMap<>();
+        Map<String, String> user=new HashMap<>();
+        user.put("name",name);
+        user.put("surname",surname);
         //create httpheader ins
         HttpHeaders headers=new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        //headers.setContentType(MediaType.APPLICATION_JSON);
         //add query parameters to url
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("id",id);
         
         HttpEntity<?> entity=new HttpEntity<>(headers);
         String burl=builder.toUriString();
-        user.put("id",id);
-        user.put("name",name);
-        user.put("surname",surname);
-        restTemplate.put(burl ,user);
-        HttpEntity<String> responsense = restTemplate.exchange(burl, HttpMethod.PUT, entity, String.class, user);
-//        System.out.println(response.toString());
+        System.out.println(burl);
+       System.out.println(user.toString());
 
-     return null;
+        
+        long startTime = System.currentTimeMillis();
+//        restTemplate.put(burl ,user);
+         HttpEntity<String> response = restTemplate.exchange(burl, HttpMethod.PUT, entity, String.class, user);
+       System.out.println(response.toString());
+        long endTime = System.currentTimeMillis();
+        long time=endTime-startTime;
+        //System.out.println("2="+getString);
+        model.addAttribute("url",burl);
+        model.addAttribute("time",time+" ms"); 
+        model.addAttribute("head",response.getHeaders());
+        model.addAttribute("bodyy",response.getBody());
+        System.out.println(response.toString());
+        try {
+			writer(url,"PUT",time,response.getHeaders(),response.getBody());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        //        System.out.println(response.toString());
+
+     return "put";
     }
 	
 	//================================================write log file===============================================================
@@ -195,12 +215,9 @@ public class MethodController {
 	        Date day = new Date();
 	        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
 	        SimpleDateFormat gmtdt = new SimpleDateFormat("hh:mm:ss.SSS");
-	        SimpleDateFormat gmtdt1 = new SimpleDateFormat("hh:mm:ss");
-	//get time of gmt-----------------------------
+	        //get time of gmt-----------------------------
 	        gmtdt.setTimeZone(TimeZone.getTimeZone("GMT"));
 	        String dy = dt.format(day);
-	        String gmtdy = gmtdt.format(day);
-	        
 	        FileWriter writer = null;
             try {
                 InputStreamReader isr = new InputStreamReader(System.in);
