@@ -1,0 +1,3 @@
+com\postman\controllers\HomeController.class
+com\postman\controllers\PostMan.class
+com\postman\controllers\MethodController.class

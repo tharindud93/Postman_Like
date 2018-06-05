@@ -14,6 +14,10 @@
 
 <form action="getmeth">
 <div class="col=md-6">
+<label>Header:</label>
+<input type="text" class="form-control input-sm col-md-7" name="header" id="header"/>
+</div>
+<div class="col=md-6">
 <label>Url:</label>
 <input type="text" class="form-control input-sm col-md-7" name="url" id="url"/>
 </div>
@@ -22,7 +26,7 @@
 <input type="text" class="form-control input-sm col-md-7" name="param" id="param"/>
 </div>
 <input class="btn btn-submit"  type="button" value="submit" id="btn" onclick="geet()">
-
+<div id="msg"></div>
 </form>
 <div class="col=md-4">
 <label>Time:</label>
@@ -48,7 +52,8 @@
 <script type="text/javascript"src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script>
 function geet(){
-
+	
+	document.getElementById("msg").innerHTML="Sending request..";
 	var u=document.getElementById("url").value;
 	var pa=document.getElementById("param").value;
 	//alert(u);

@@ -175,20 +175,21 @@ public class MethodController {
         user.put("surname",surname);
         //create httpheader ins
         HttpHeaders headers=new HttpHeaders();
-        //headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
         //add query parameters to url
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                 .queryParam("id",id);
         
-        HttpEntity<?> entity=new HttpEntity<>(headers);
+        
         String burl=builder.toUriString();
         System.out.println(burl);
        System.out.println(user.toString());
-
+       HttpEntity<?> entity=new HttpEntity<>(url);
         
         long startTime = System.currentTimeMillis();
 //        restTemplate.put(burl ,user);
-         HttpEntity<String> response = restTemplate.exchange(burl, HttpMethod.PUT, entity, String.class, user);
+        	HttpEntity<?> response=restTemplate.exchange(burl, HttpMethod.PUT,entity, HttpEntity.class,user);
+       
        System.out.println(response.toString());
         long endTime = System.currentTimeMillis();
         long time=endTime-startTime;
@@ -198,12 +199,12 @@ public class MethodController {
         model.addAttribute("head",response.getHeaders());
         model.addAttribute("bodyy",response.getBody());
         System.out.println(response.toString());
-        try {
-			writer(url,"PUT",time,response.getHeaders(),response.getBody());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//        try {
+//			writer(url,"PUT",time,response.getHeaders(),response.getBody());
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
         //        System.out.println(response.toString());
 
      return "put";

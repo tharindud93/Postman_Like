@@ -14,6 +14,10 @@
 
 <form action="deletemeth">
 <div class="col=md-6">
+<label>Header:</label>
+<input type="text" class="form-control input-sm col-md-7" name="header" id="header"/>
+</div>
+<div class="col=md-6">
 <label>Url:</label>
 <input type="text" class="form-control input-sm col-md-7" name="url" id="url"/>
 </div>
@@ -21,9 +25,13 @@
 <label>id:</label>
 <input type="text" class="form-control input-sm col-md-7" name="id" id="id"/>
 </div>
-<input class="btn btn-submit"  type="submit" value="submit">
-
+<input class="btn btn-submit"  type="button" value="submit" onclick="geet()">
+<div id="msg"></div>
 </form>
+<div class="col=md-12">
+<label>Time:</label>
+<input type="text" class="form-control col-md-8" value="${time}"/>
+</div>
 <div class="col=md-12">
 <label>Url:</label>
 <textarea class="form-control col-md-8"> ${url}</textarea>
@@ -40,6 +48,23 @@
 </div>
 <hr>
 </div>
+<script>
+function geet(){
+	document.getElementById("msg").innerHTML="Sending request..";
+	var u=document.getElementById("url").value;
+	var id=document.getElementById("id").value;
+
+	//alert(u);
+
+$.get(
+	    "deletemeth",
+	    {url : u, id : id},
+	    function(data) {
+	    	document.getElementById("area").innerHTML= data;
+	    }
+	);
+}	
+</script>
 <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script> 
 <script type="text/javascript"src="webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </body>
